@@ -1,0 +1,42 @@
+services: 
+  go_app_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DEBUG: true
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: converter
+      POSTGRES_HOST: postgres
+      POSTGRES_SSL_MODE: disable
+    volumes:
+      - .:/app
+      - external-storage:/media/uploads
+    tty: true
+    stdin_open: true
+
+  postgres:
+    image: postgres:latest
+    ports: 
+      - "5432:5423"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: converter
+    volumes:
+      - .docker/postgres:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@user.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    ports:
+      - "8888:80"
+    depends_on:
+      - postgres
+
+volumes:
+  external-storage:
+  postgres-data:

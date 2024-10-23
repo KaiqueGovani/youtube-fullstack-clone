@@ -4,10 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"fullstack-youtube-clone/internal/converter"
+	"fullstack-youtube-clone/internal/rabbitmq"
 	"log/slog"
 	"os"
 
 	_ "github.com/lib/pq"
+	"github.com/streadway/amqp"
 )
 
 func connectPostgres() (*sql.DB, error) {
@@ -47,7 +49,29 @@ func main() {
 		panic(err)
 	}
 
-	vc := converter.NewVideoConverter(db)
+	rabbitMQURL := getEnvOrDefault("RABBITMQ_URL", "amqp://guest:guest@localhost:5672/")
+	rabbitClient, err := rabbitmq.NewRabbitClient(rabbitMQURL)
+	if err != nil {
+		panic(err)
+	}
+	defer rabbitClient.Close()
 
-	vc.Handle([]byte(`{"video_id": 1, "path": "/media/uploads/1"}`))
+	convetionExch := getEnvOrDefault("CONVERSION_EXCHANGE", "conversion_exchange")
+	queueName := getEnvOrDefault("CONVERSION_QUEUE", "video_conversion_queue")
+	conversionKey := getEnvOrDefault("CONVERSION_KEY", "conversion")
+
+	vc := converter.NewVideoConverter(rabbitClient, db)
+
+	// vc.Handle([]byte(`{"video_id": 1, "path": "/media/uploads/1"}`))
+	msgs, err := rabbitClient.ConsumeMessages(convetionExch, conversionKey, queueName)
+	if err != nil {
+		slog.Error("Error consuming messages", slog.String("error", err.Error()))
+	}
+
+	for d := range msgs {
+		go func(d amqp.Delivery) {
+			vc.Handle(d)
+		}(d)
+	}
+
 }

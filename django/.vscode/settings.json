@@ -1,19 +1,22 @@
 {
-    "python.analysis.autoImportCompletions": true,
-    "python.analysis.indexing": true,
-    "python.analysis.packageIndexDepths": [
-        {
-            "name": "django",
-            "includeAllSymbols": true,
-            "depth": 20
-        }
-    ],
-    "python.analysis.extraPaths": [
-        ".venv/Lib/site-packages",
-    ],
-    "workbench.colorCustomizations": {
-        "titleBar.activeBackground": "#040",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.indexing": true,
+  "python.analysis.packageIndexDepths": [
+    {
+      "name": "django",
+      "includeAllSymbols": true,
+      "depth": 20
     },
-    
-    "editor.formatOnSave": true
+    {
+      "name": "rest_framework",
+      "includeAllSymbols": true,
+      "depth": 20
+    }
+  ],
+  "python.analysis.extraPaths": [".venv/Lib/site-packages"],
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#040"
+  },
+
+  "editor.formatOnSave": true
 }

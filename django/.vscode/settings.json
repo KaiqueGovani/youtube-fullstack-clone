@@ -11,4 +11,9 @@
     "python.analysis.extraPaths": [
         ".venv/Lib/site-packages",
     ],
+    "workbench.colorCustomizations": {
+        "titleBar.activeBackground": "#040",
+    },
+    
+    "editor.formatOnSave": true
 }

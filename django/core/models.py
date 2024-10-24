@@ -1,4 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+
 
 # Create your models here.
 class Video(models.Model):
@@ -6,51 +9,90 @@ class Video(models.Model):
     description = models.TextField(verbose_name="Descrição")
     thumbnail = models.ImageField(upload_to="thumbnails/", verbose_name="Thumbnail")
     slug = models.SlugField(unique=True)
-    published_at = models.DateTimeField(verbose_name="Publicado em", null=True, editable=False)
+    published_at = models.DateTimeField(
+        verbose_name="Publicado em", null=True, editable=False
+    )
     is_published = models.BooleanField(default=False, verbose_name="Publicado")
     num_likes = models.IntegerField(default=0, verbose_name="Likes", editable=False)
-    num_views = models.IntegerField(default=0, verbose_name="Visualizações", editable=False)
-    tags = models.ManyToManyField('Tag', verbose_name="Tags", related_name="videos")
-    author = models.ForeignKey('auth.User', on_delete=models.PROTECT, verbose_name="Autor", related_name='videos', editable=False)
+    num_views = models.IntegerField(
+        default=0, verbose_name="Visualizações", editable=False
+    )
+    tags = models.ManyToManyField("Tag", verbose_name="Tags", related_name="videos")
+    author = models.ForeignKey(
+        "auth.User",
+        on_delete=models.PROTECT,
+        verbose_name="Autor",
+        related_name="videos",
+        editable=False,
+    )
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        if self.is_published and not self.published_at:
+            self.published_at = timezone.now()
+        super().save(force_insert, force_update, using, update_fields)
+
+    def clean(self):
+        if self.is_published:
+            if not hasattr(self, "video_media"):
+                raise ValidationError("O vídeo não possui mídia associada.")
+            if self.video_media.status != VideoMedia.Status.PROCESS_FINISHED:
+                raise ValidationError("O vídeo não foi processado.")
 
     def get_video_status_display(self):
-        if not hasattr(self, 'video_media'):
-            return 'Pendente'
+        if not hasattr(self, "video_media"):
+            return "Pendente"
         return self.video_media.get_status_display()
 
     class Meta:
         verbose_name = "Vídeo"
         verbose_name_plural = "Vídeos"
-        
 
     def __str__(self):
         return self.title
 
+
 class VideoMedia(models.Model):
-    
+
     class Status(models.TextChoices):
-        UPLOAD_STARTED = 'UPLOAD_STARTED', 'Upload Iniciado'
-        PROCESS_STARTED = 'PROCESS_STARTED', 'Processamento Iniciado'
-        PROCESS_FINISHED = 'PROCESS_FINISHED', 'Processamento Finalizado'
-        PROCESS_ERROR = 'PROCESS_ERROR', 'Processamento com Erro'
+        UPLOAD_STARTED = "UPLOAD_STARTED", "Upload Iniciado"
+        PROCESS_STARTED = "PROCESS_STARTED", "Processamento Iniciado"
+        PROCESS_FINISHED = "PROCESS_FINISHED", "Processamento Finalizado"
+        PROCESS_ERROR = "PROCESS_ERROR", "Processamento com Erro"
 
     video_path = models.CharField(max_length=255, verbose_name="Vídeo")
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.UPLOAD_STARTED, verbose_name="Status")
-    video = models.OneToOneField('Video', on_delete=models.PROTECT, verbose_name="Vídeo", related_name="video_media")
-    
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.UPLOAD_STARTED,
+        verbose_name="Status",
+    )
+    video = models.OneToOneField(
+        "Video",
+        on_delete=models.PROTECT,
+        verbose_name="Vídeo",
+        related_name="video_media",
+    )
+
     def get_status_display(self):
         return VideoMedia.Status(self.status).label
 
     class Meta:
-        verbose_name = 'Mídia'
-        verbose_name_plural = 'Mídias'
-    
+        verbose_name = "Mídia"
+        verbose_name_plural = "Mídias"
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Nome")
 
     class Meta:
-        verbose_name = 'Tag'
-        verbose_name_plural = 'Tags'
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
 
     def __str__(self):
         return self.name

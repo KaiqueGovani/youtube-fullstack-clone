@@ -14,6 +14,8 @@ services:
       CONVERSION_EXCHANGE: conversion_exchange
       CONVERSION_QUEUE: video_conversion_queue
       CONVERSION_KEY: conversion
+      CONFIRMATION_KEY: finish-conversion
+      CONFIRMATION_QUEUE: finish_confirmation_queue
     volumes:
       - .:/app
       - external-storage:/media/uploads

@@ -34,7 +34,7 @@ type VideoTask struct {
 	Path    string `json:"path"`
 }
 
-func (vc *VideoConverter) Handle(d amqp.Delivery) {
+func (vc *VideoConverter) Handle(d amqp.Delivery, conversionExch, confirmationKey, queueName string) {
 	var task VideoTask
 	if err := json.Unmarshal(d.Body, &task); err != nil {
 		vc.logError(task, "failed to unmarshal task", err)
@@ -43,6 +43,7 @@ func (vc *VideoConverter) Handle(d amqp.Delivery) {
 
 	if IsProcessed(vc.db, task.VideoID) {
 		slog.Warn("Video already processed", slog.Int("video_id", task.VideoID))
+		d.Ack(false)
 		return
 	}
 
@@ -59,6 +60,13 @@ func (vc *VideoConverter) Handle(d amqp.Delivery) {
 	}
 	d.Ack(false)
 	slog.Info("Video processed", slog.Int("video_id", task.VideoID))
+
+	confirmationMessage := []byte(fmt.Sprintf(`{"video_id": %d, "path": "%s"}`, task.VideoID, task.Path))
+	err = vc.rabbitmqClient.PublishMessage(conversionExch, confirmationKey, queueName, confirmationMessage)
+	if err != nil {
+		vc.logError(task, "failed to publish confirmation message", err)
+		return
+	}
 }
 
 func (vc *VideoConverter) processVideo(task *VideoTask) error {

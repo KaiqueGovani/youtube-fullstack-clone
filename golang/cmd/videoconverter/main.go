@@ -1,14 +1,18 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"fullstack-youtube-clone/internal/converter"
 	"fullstack-youtube-clone/internal/rabbitmq"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 
 	_ "github.com/lib/pq"
+	"github.com/lmittmann/tint"
 	"github.com/streadway/amqp"
 )
 
@@ -44,6 +48,17 @@ func getEnvOrDefault(key, defaultValue string) string {
 }
 
 func main() {
+	logger := slog.New(tint.NewHandler(os.Stdout, &tint.Options{
+		Level: slog.LevelDebug,
+	}))
+	slog.SetDefault(logger)
+
+	_, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
 	db, err := connectPostgres()
 	if err != nil {
 		panic(err)
@@ -56,22 +71,29 @@ func main() {
 	}
 	defer rabbitClient.Close()
 
-	convetionExch := getEnvOrDefault("CONVERSION_EXCHANGE", "conversion_exchange")
+	convertionExch := getEnvOrDefault("CONVERSION_EXCHANGE", "conversion_exchange")
 	queueName := getEnvOrDefault("CONVERSION_QUEUE", "video_conversion_queue")
 	conversionKey := getEnvOrDefault("CONVERSION_KEY", "conversion")
+	confirmationKey := getEnvOrDefault("CONFIRMATION_KEY", "finish-conversion")
+	confirmationQueue := getEnvOrDefault("CONFIRMATION_QUEUE", "finish_confirmation_queue")
 
 	vc := converter.NewVideoConverter(rabbitClient, db)
 
 	// vc.Handle([]byte(`{"video_id": 1, "path": "/media/uploads/1"}`))
-	msgs, err := rabbitClient.ConsumeMessages(convetionExch, conversionKey, queueName)
+	msgs, err := rabbitClient.ConsumeMessages(convertionExch, conversionKey, queueName)
 	if err != nil {
 		slog.Error("Error consuming messages", slog.String("error", err.Error()))
 	}
 
-	for d := range msgs {
-		go func(d amqp.Delivery) {
-			vc.Handle(d)
-		}(d)
-	}
+	go func() {
+		for d := range msgs {
+			go func(d amqp.Delivery) {
+				vc.Handle(d, convertionExch, confirmationKey, confirmationQueue)
+			}(d)
+		}
+	}()
 
+	<-sigChan
+	cancel()
+	slog.Info("Shutting down...")
 }

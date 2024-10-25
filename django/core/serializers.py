@@ -20,7 +20,7 @@ class VideoSerializer(serializers.ModelSerializer):
     
     def get_video_url(self, obj):
         if hasattr(obj, 'video_media'):
-            return f'http://localhost:9000/{obj.video_media.video_path}'
+            return f'http://localhost:9000/{obj.video_media.video_path if obj.video_media.video_path.endswith(".mpd") else obj.video_media.video_path[1:] + "/mpeg-dash/output.mpd"}'
         return None
     
     class Meta:

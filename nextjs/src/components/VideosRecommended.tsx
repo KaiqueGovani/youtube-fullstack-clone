@@ -1,14 +1,12 @@
 import Link from "next/link";
-import { VideoModel } from "../models";
 import { VideoCard } from "./VideoCard";
+import { VideoModel } from "@/models";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function getVideosRecommended(videoId: number): Promise<VideoModel[]> {
   await sleep(2000);
-  const response = await fetch(`http://localhost:8000/api/videos/${videoId}/recommended`, {
-    cache: "no-cache",
-  });
+  const response = await fetch(`http://localhost:8000/api/videos/${videoId}/recommended`);
 
   return response.json();
 }

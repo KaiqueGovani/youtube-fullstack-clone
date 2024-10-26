@@ -1,0 +1,11 @@
+services:
+  nextjs:
+    build: .
+    volumes: 
+      - .:/home/node/app
+    environment:
+      - DJANGO_API_URL=http://django:8000/api
+    ports:
+      - 3000:3000
+    extra_hosts:
+      - host.docker.internal:host-gateway

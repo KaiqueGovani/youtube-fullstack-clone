@@ -4,7 +4,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function getLikes(videoId: number): Promise<number> {
   await sleep(2000);
-  const response = await fetch(`http://localhost:8000/api/videos/${videoId}/likes`, {
+  const response = await fetch(`${process.env.DJANGO_API_URL}/videos/${videoId}/likes`, {
     next: {
       revalidate: 60,
     },

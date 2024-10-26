@@ -103,15 +103,13 @@ class VideoService:
         dest_path = f"/media/uploads/{video_id}"
         self.storage.move_chunks(source_path, dest_path)
         self.__produce_message(video_id, dest_path, "conversion")
-
+        
     def register_processed_video_path(self, video_id: int, video_path) -> None:
         video = self.find_video(video_id)
         video_media = video.video_media
         if video_media.status != VideoMedia.Status.PROCESS_STARTED:
-            raise VideoMediaInvalidStatusException(
-                "Processing must be started to finish it."
-            )
-        video_media.video_path = video_path
+            raise VideoMediaInvalidStatusException('Processing must be started to finish it.')
+        video_media.video_path = video_path.replace('/media/uploads/', '') + '/mpeg-dash/output.mpd'
         video_media.status = VideoMedia.Status.PROCESS_FINISHED
         video_media.save()
 

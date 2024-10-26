@@ -11,10 +11,7 @@ def random_filename(instance, filename):
     
     # Usa o timestamp atual e o nome original para gerar o hash simples
     hash_object = hashlib.md5(f"{filename}{time.time()}".encode('utf-8'))
-    hashed_filename = f"{hash_object.hexdigest()}.{ext}"
-
-    # Retorna o caminho completo dentro da pasta 'thumbnails/'
-    return os.path.join('/media/uploads', hashed_filename)
+    return f"{hash_object.hexdigest()}.{ext}"
 
 # Create your models here.
 class Video(models.Model):

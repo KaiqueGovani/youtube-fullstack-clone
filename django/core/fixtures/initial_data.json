@@ -18,12 +18,83 @@
         }
     },
     {
+        "model": "core.tag",
+        "pk": 1,
+        "fields": {
+            "name": "Tag 1"
+        }
+    },
+    {
+        "model": "core.tag",
+        "pk": 2,
+        "fields": {
+            "name": "Tag 2"
+        }
+    },
+    {
+        "model": "core.tag",
+        "pk": 3,
+        "fields": {
+            "name": "Tag 3"
+        }
+    },
+    {
+        "model": "core.video",
+        "pk": 1,
+        "fields": {
+            "title": "Video 1",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
+            "thumbnail": "thumbnail-01.png",
+            "slug": "video-1",
+            "published_at": "2020-01-01T00:00:00Z",
+            "is_published": true,
+            "num_likes": 11,
+            "num_views": 100,
+            "tags": [1],
+            "author": 1
+        }
+    },
+    {
+        "model": "core.videomedia",
+        "pk": 1,
+        "fields": {
+            "video": 1,
+            "video_path": "1/test.mpd",
+            "status": "PROCESSING_FINISHED"
+        }
+    },
+    {
+        "model": "core.video",
+        "pk": 2,
+        "fields": {
+            "title": "Video 2",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
+            "thumbnail": "thumbnail-02.png",
+            "slug": "video-2",
+            "published_at": "2020-01-01T00:00:00Z",
+            "is_published": true,
+            "num_likes": 11,
+            "num_views": 100,
+            "tags": [2],
+            "author": 1
+        }
+    },
+    {
+        "model": "core.videomedia",
+        "pk": 2,
+        "fields": {
+            "video": 2,
+            "video_path": "1/test.mpd",
+            "status": "PROCESSING_FINISHED"
+        }
+    },
+    {
         "model": "core.video",
         "pk": 3,
         "fields": {
             "title": "Video 3",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
-            "thumbnail": "/media/uploads/thumbnail-03.png",
+            "thumbnail": "thumbnail-03.png",
             "slug": "video-3",
             "published_at": "2020-01-01T00:00:00Z",
             "is_published": true,
@@ -38,7 +109,7 @@
         "pk": 3,
         "fields": {
             "video": 3,
-            "video_path": "/media/uploads/1/test.mpd",
+            "video_path": "1/test.mpd",
             "status": "PROCESSING_FINISHED"
         }
     },
@@ -48,7 +119,7 @@
         "fields": {
             "title": "Video 4",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
-            "thumbnail": "/media/uploads/thumbnail-04.png",
+            "thumbnail": "thumbnail-04.png",
             "slug": "video-4",
             "published_at": "2020-01-01T00:00:00Z",
             "is_published": true,
@@ -63,7 +134,7 @@
         "pk": 4,
         "fields": {
             "video": 4,
-            "video_path": "/media/uploads/1/test.mpd",
+            "video_path": "1/test.mpd",
             "status": "PROCESSING_FINISHED"
         }
     },
@@ -73,7 +144,7 @@
         "fields": {
             "title": "Video 5",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
-            "thumbnail": "/media/uploads/thumbnail-05.png",
+            "thumbnail": "thumbnail-05.png",
             "slug": "video-5",
             "published_at": "2020-01-01T00:00:00Z",
             "is_published": true,
@@ -88,7 +159,7 @@
         "pk": 5,
         "fields": {
             "video": 5,
-            "video_path": "/media/uploads/1/test.mpd",
+            "video_path": "1/test.mpd",
             "status": "PROCESSING_FINISHED"
         }
     },
@@ -98,7 +169,7 @@
         "fields": {
             "title": "Video 6",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
-            "thumbnail": "/media/uploads/thumbnail-06.png",
+            "thumbnail": "thumbnail-06.png",
             "slug": "video-6",
             "published_at": "2020-01-01T00:00:00Z",
             "is_published": true,
@@ -113,7 +184,7 @@
         "pk": 6,
         "fields": {
             "video": 6,
-            "video_path": "/media/uploads/1/test.mpd",
+            "video_path": "1/test.mpd",
             "status": "PROCESSING_FINISHED"
         }
     },
@@ -123,7 +194,7 @@
         "fields": {
             "title": "Video 7",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
-            "thumbnail": "/media/uploads/thumbnail-07.png",
+            "thumbnail": "thumbnail-07.png",
             "slug": "video-7",
             "published_at": "2020-01-01T00:00:00Z",
             "is_published": true,
@@ -138,7 +209,7 @@
         "pk": 7,
         "fields": {
             "video": 7,
-            "video_path": "/media/uploads/1/test.mpd",
+            "video_path": "1/test.mpd",
             "status": "PROCESSING_FINISHED"
         }
     },
@@ -148,7 +219,7 @@
         "fields": {
             "title": "Video 8",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
-            "thumbnail": "/media/uploads/thumbnail-08.png",
+            "thumbnail": "thumbnail-08.png",
             "slug": "video-8",
             "published_at": "2020-01-01T00:00:00Z",
             "is_published": true,
@@ -163,7 +234,7 @@
         "pk": 8,
         "fields": {
             "video": 8,
-            "video_path": "/media/uploads/1/test.mpd",
+            "video_path": "1/test.mpd",
             "status": "PROCESSING_FINISHED"
         }
     },
@@ -173,7 +244,7 @@
         "fields": {
             "title": "Video 9",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
-            "thumbnail": "/media/uploads/thumbnail-09.png",
+            "thumbnail": "thumbnail-09.png",
             "slug": "video-9",
             "published_at": "2020-01-01T00:00:00Z",
             "is_published": true,
@@ -188,7 +259,7 @@
         "pk": 9,
         "fields": {
             "video": 9,
-            "video_path": "/media/uploads/1/test.mpd",
+            "video_path": "1/test.mpd",
             "status": "PROCESSING_FINISHED"
         }
     },
@@ -198,7 +269,7 @@
         "fields": {
             "title": "Video 10",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
-            "thumbnail": "/media/uploads/thumbnail-10.png",
+            "thumbnail": "thumbnail-10.png",
             "slug": "video-10",
             "published_at": "2020-01-01T00:00:00Z",
             "is_published": true,
@@ -213,7 +284,7 @@
         "pk": 10,
         "fields": {
             "video": 10,
-            "video_path": "/media/uploads/1/test.mpd",
+            "video_path": "1/test.mpd",
             "status": "PROCESSING_FINISHED"
         }
     }

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,9 @@ SECRET_KEY = "django-insecure-2ml6q6%z_2jmeeyy00#*-7$oy!0h*zuj-nuk4k9wm2971u!&l@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'host.docker.internal', 'localhost', 'django'
+]
 
 
 # Application definition
@@ -76,14 +80,15 @@ WSGI_APPLICATION = "videos.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "mydb",
-        "USER": "postgres",
-        "PASSWORD": "root",
-        "HOST": "db",
-        "PORT": 5432,
-    }
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "mydb",
+#         "USER": "postgres",
+#         "PASSWORD": "root",
+#         "HOST": "db",
+#         "PORT": 5432,
+#     }
+    'default': dj_database_url.config(default=os.environ.get("DATABASE_URL"))
 }
 
 
@@ -127,3 +132,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+RABBITMQ_URL = os.environ.get("RABBITMQ_URL")
+ASSETS_URL = os.environ.get("ASSETS_URL")
+

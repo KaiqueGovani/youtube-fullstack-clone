@@ -85,6 +85,7 @@ func main() {
 		slog.Error("Error consuming messages", slog.String("error", err.Error()))
 	}
 
+	slog.Info("Waiting for messages...")
 	go func() {
 		for d := range msgs {
 			go func(d amqp.Delivery) {

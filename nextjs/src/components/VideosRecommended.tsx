@@ -6,7 +6,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function getVideosRecommended(videoId: number): Promise<VideoModel[]> {
   await sleep(2000);
-  const response = await fetch(`http://localhost:8000/api/videos/${videoId}/recommended`);
+  const response = await fetch(`${process.env.DJANGO_API_URL}/videos/${videoId}/recommended`);
 
   return response.json();
 }

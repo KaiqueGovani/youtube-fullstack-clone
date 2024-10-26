@@ -2,7 +2,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function getViews(videoId: number): Promise<number> {
   await sleep(2000);
-  const response = await fetch(`http://localhost:8000/api/videos/${videoId}/views`, {
+  const response = await fetch(`${process.env.DJANGO_API_URL}/videos/${videoId}/views`, {
     next: {
       revalidate: 60,
     },

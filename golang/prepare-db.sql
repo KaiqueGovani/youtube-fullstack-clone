@@ -1,3 +1,7 @@
+CREATE DATABASE converter;
+
+\c converter;
+
 CREATE TABLE processed_videos (
     video_id INT PRIMARY KEY,
     status VARCHAR(50) NOT NULL,

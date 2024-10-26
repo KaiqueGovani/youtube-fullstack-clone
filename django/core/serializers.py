@@ -16,11 +16,17 @@ class VideoSerializer(serializers.ModelSerializer):
 
 
     def get_thumbnail(self, obj):
-        return f'http://localhost:9000/{obj.thumbnail}'
+        assets_url = settings.ASSETS_URL
+        return f'http://host.docker.internal:9000/media/uploads{obj.thumbnail if f"{obj.thumbnail}".startswith("/") else f"/{obj.thumbnail}"}'
     
     def get_video_url(self, obj):
+        assets_url = settings.ASSETS_URL
+        if (obj.video_media.video_path.startswith("/media/uploads")):
+            path = f'http://host.docker.internal:9000{obj.video_media.video_path}/mpeg-dash/output.mpd'
+        else:
+            path = f'http://host.docker.internal:9000/media/uploads{obj.video_media.video_path}'
         if hasattr(obj, 'video_media'):
-            return f'http://localhost:9000/{obj.video_media.video_path if obj.video_media.video_path.endswith(".mpd") else obj.video_media.video_path[1:] + "/mpeg-dash/output.mpd"}'
+            return path
         return None
     
     class Meta:
